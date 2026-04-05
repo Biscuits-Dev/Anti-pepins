@@ -139,7 +139,7 @@ En résumé :
 1. Forker le repo et créer une branche depuis `main`
 2. Écrire les tests en premier (`__tests__/`)
 3. Vérifier avant de pousser : `npm run lint && npx tsc --noEmit && npm test`
-4. Ouvrir une Pull Request vers `main`
+4. Ouvrir une Pull Request vers `Dev`
 
 Toutes les contributions sont les bienvenues : corrections de bugs, nouvelles fonctionnalités, documentation, traductions.
 
