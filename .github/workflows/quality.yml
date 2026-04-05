@@ -17,7 +17,7 @@ jobs:
       UPSTASH_REDIS_REST_URL: https://placeholder.upstash.io
       UPSTASH_REDIS_REST_TOKEN: placeholder
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - uses: actions/setup-node@v4
         with:
@@ -51,7 +51,7 @@ jobs:
     name: Lighthouse CI
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - uses: actions/setup-node@v4
         with:
