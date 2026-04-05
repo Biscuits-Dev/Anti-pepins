@@ -37,13 +37,13 @@
     "@types/node": "^25",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "eslint": "^9.39.4",
-    "eslint-config-next": "16.2.1",
+    "eslint": "^10.2.0",
+    "eslint-config-next": "16.2.2",
     "husky": "^9.1.7",
     "jest": "^30.3.0",
     "prettier": "^3.8.1",
     "tailwindcss": "^4",
     "ts-jest": "^29.4.9",
-    "typescript": "5.8.3"
+    "typescript": "6.0.2"
   }
 }
