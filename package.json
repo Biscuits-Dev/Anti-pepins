@@ -13,7 +13,7 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "@sanity/image-url": "^2.1.0",
+    "@sanity/image-url": "^2.1.1",
     "@sanity/types": "^5.18.0",
     "@supabase/ssr": "^0.10.0",
     "@supabase/supabase-js": "^2.101.1",
