@@ -1,0 +1,5 @@
+# Seuls les admins listés ici peuvent approuver les merges vers main.
+# Remplacez @AlexisTak par les logins GitHub des admins.
+
+# Protection de main : revue obligatoire par un admin
+/   @AlexisTak

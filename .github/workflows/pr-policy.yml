@@ -1,0 +1,53 @@
+name: PR Policy
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+permissions:
+  pull-requests: write
+
+jobs:
+  enforce-target-branch:
+    name: Enforce PR target branch
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check PR targets dev
+        if: github.base_ref != 'dev'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const base = context.payload.pull_request.base.ref;
+            const head = context.payload.pull_request.head.ref;
+            const author = context.payload.pull_request.user.login;
+
+            // Allow dev -> main only (checked separately via branch protection)
+            if (base === 'main' && head === 'dev') {
+              console.log('dev -> main PR: allowed (branch protection handles approval)');
+              return;
+            }
+
+            // All other PRs must target dev
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: [
+                `👋 Bonjour @${author} !`,
+                '',
+                `Cette PR cible la branche \`${base}\` — seules les PR vers \`dev\` sont acceptées.`,
+                '',
+                'Merci de ré-ouvrir votre PR en ciblant la branche **`dev`**.',
+                '',
+                '> Les fusions `dev → main` sont réservées aux mainteneurs du projet.',
+              ].join('\n'),
+            });
+
+            await github.rest.pulls.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number,
+              state: 'closed',
+            });
+
+            core.setFailed(`PR fermée : cible "${base}" au lieu de "dev".`);
