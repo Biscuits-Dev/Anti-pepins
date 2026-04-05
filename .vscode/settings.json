@@ -1,0 +1,6 @@
+{
+    "sonarlint.connectedMode.project": {
+        "connectionId": "biscuits-dev",
+        "projectKey": "Biscuits-Dev_Anti-pepins"
+    }
+}
