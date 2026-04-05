@@ -1,174 +1,161 @@
-# Anti Pepins - Collectif contre les arnaques
+# Anti-Pépins — Collectif contre les arnaques
 
-[![Next.js](https://img.shields.io/badge/Next.js-16.2.1-black)](https://nextjs.org/)
-[![React](https://img.shields.io/badge/React-19.2.4-blue)](https://reactjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.8.3-blue)](https://www.typescriptlang.org/)
+[![Next.js](https://img.shields.io/badge/Next.js-16.x-black)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-19.x-blue)](https://reactjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.x-06B6D4)](https://tailwindcss.com/)
 [![Supabase](https://img.shields.io/badge/Supabase-Backend-3ECF8E)](https://supabase.com/)
 [![Sanity](https://img.shields.io/badge/Sanity-CMS-F03E2F)](https://www.sanity.io/)
 [![License](https://img.shields.io/badge/License-AGPL%20v3-blue)](LICENSE)
 
-**Anti Pepins** est un collectif citoyen et open source dédié à la lutte contre les arnaques en ligne. Notre plateforme permet aux utilisateurs d'analyser, signaler, partager et consulter des informations sur les escroqueries pour protéger la communauté.
+**Anti-Pépins** est un collectif citoyen open source dédié à la lutte contre les arnaques en ligne. La plateforme permet d'analyser des URLs, e-mails, numéros de téléphone et messages suspects, de signaler des escroqueries, et de partager des témoignages pour protéger la communauté.
 
-## 📚 Description du projet
+---
 
-Anti Pepins est une application web moderne construite avec Next.js 16, React 19 et TypeScript. Le projet vise à :
+## Fonctionnalités
 
-- ✅ Analyser en temps réel des messages, mails, urls, numéros de téléphone via regex et intelligence artificielle
-- ✅ Permettre aux utilisateurs de signaler des arnaques avec preuves
-- ✅ Collecter et partager des témoignages de victimes
-- ✅ Créer une base de données publique et collaborative des escroqueries
-- ✅ Fournir des guides, conseils et articles éducatifs
-- ✅ Sensibiliser et former aux bonnes pratiques de sécurité en ligne
-- ✅ Protéger les utilisateurs contre les fraudes et les arnaques
+| Page | Description |
+|---|---|
+| `/analyze` | Analyse d'URL, e-mail, téléphone ou message via regex + IA |
+| `/report` | Signalement d'une arnaque (sauvegardé en base) |
+| `/temoignage` | Dépôt d'un témoignage (modéré avant publication) |
+| `/contact` | Formulaire de contact |
+| `/blog` | Articles éducatifs via Sanity CMS |
+| Chat widget | Chat flottant sur toutes les pages, avec réponse en temps réel par des bénévoles |
+| `/admin` | Panel bénévole — tableau de bord de chat en temps réel (accès admin requis) |
 
-## 🛠️ Technologies utilisées
+---
 
-### Framework & Langages
-- **Next.js** 16.2.1 (App Router)
-- **React** 19.2.4
-- **TypeScript** 5.8.3
-- **Tailwind CSS** 4.x
+## Stack technique
 
-### Base de données & Services
-- **Supabase** - Base de données PostgreSQL
-- **Sanity.io** - CMS headless pour le contenu du blog
-- **Upstash Redis** - Rate Limiting et cache
-- **Mistral (Model Biscuits IA) / regex** - Pour l'analyse intelligente des contenus
+| Catégorie | Technologies |
+|---|---|
+| Framework | Next.js 16 App Router, React 19, TypeScript 5 |
+| Style | Tailwind CSS 4 |
+| Base de données | Supabase (PostgreSQL + Realtime) |
+| CMS | Sanity.io (blog `/blog`) |
+| Rate limiting | Upstash Redis (sliding window) |
+| Analyse IA | Mistral AI (optionnel, fallback heuristique) |
+| État global | Zustand |
+| Tests | Jest |
+| Qualité code | ESLint, Prettier, Husky |
+| Analytics | Vercel Analytics |
 
-### Outils & Bibliothèques
-- **Zustand** - Gestion d'état global
-- **React Hot Toast** - Notifications
-- **Jest** - Tests unitaires
-- **ESLint + Prettier** - Qualité et formatage du code
-- **Husky** - Git hooks
-- **Vercel Analytics**
+---
 
-## 🚀 Installation et configuration
+## Installation
 
 ### Prérequis
 
-- Node.js 22 ou supérieur
-- npm 10 ou supérieur
-- Compte Supabase
-- Compte Sanity (optionnel)
-- Compte Upstash (optionnel)
+- Node.js 20+
+- npm 10+
+- Compte [Supabase](https://supabase.com) (obligatoire)
+- Compte [Upstash](https://upstash.com) (optionnel — rate limiting)
+- Clé [Mistral AI](https://console.mistral.ai) (optionnel — analyse IA)
+- Compte [Sanity](https://www.sanity.io) (optionnel — blog)
 
-### Étapes d'installation
-
-1. **Cloner le dépôt**
+### Démarrage rapide
 
 ```bash
 git clone https://github.com/Biscuits-Dev/Anti-pepins.git
 cd Anti-pepins
-```
-
-2. **Installer les dépendances**
-
-```bash
 npm install
+cp .env.example .env.local   # puis remplir les variables (voir ci-dessous)
+npm run dev                   # http://localhost:3000
 ```
 
-3. **Configurer les variables d'environnement**
+### Variables d'environnement
 
-Copiez le fichier exemple et remplissez les variables nécessaires :
-```bash
-cp .env.local.example .env.local
-```
+| Variable | Obligatoire | Description |
+|---|---|---|
+| `NEXT_PUBLIC_SUPABASE_URL` | Oui | URL du projet Supabase |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Oui | Clé anonyme (côté client) |
+| `SUPABASE_SERVICE_ROLE_KEY` | Oui | Clé service role — **jamais exposée côté client** |
+| `UPSTASH_REDIS_REST_URL` | Non | Rate limiting distribué (désactivé si absent) |
+| `UPSTASH_REDIS_REST_TOKEN` | Non | Rate limiting distribué |
+| `MISTRAL_API_KEY` | Non | Analyse IA (fallback heuristique si absent) |
+| `NEXT_PUBLIC_SANITY_PROJECT_ID` | Non | Blog (section `/blog` désactivée si absent) |
+| `NEXT_PUBLIC_SANITY_DATASET` | Non | Dataset Sanity — généralement `production` |
 
-Éditez le fichier `.env.local` avec vos propres identifiants.
+---
 
-4. **Lancer le serveur de développement**
-
-```bash
-npm run dev
-```
-
-5. **Ouvrir dans le navigateur**
-
-Ouvrez [http://localhost:3000](http://localhost:3000) dans votre navigateur.
-
-## 📖 Scripts disponibles
+## Scripts
 
 | Commande | Description |
-|----------|-------------|
-| `npm run dev` | Lance le serveur de développement |
-| `npm run build` | Construit l'application pour production |
-| `npm run start` | Lance le serveur de production |
-| `npm run lint` | Vérifie la qualité du code |
-| `npm run test` | Exécute les tests unitaires |
-| `npm run types:supabase` | Génère les types TypeScript depuis Supabase |
+|---|---|
+| `npm run dev` | Serveur de développement |
+| `npm run build` | Build de production |
+| `npm run start` | Serveur de production |
+| `npm run lint` | Vérification ESLint |
+| `npm test` | Tests Jest |
+| `npm run types:supabase` | Régénère `types/supabase.ts` depuis le schéma Supabase |
 
-## 🎯 Fonctionnalités principales
+---
 
-### 🔍 Analyseur d'arnaques
-- Analyse de texte, mail, url, numéro de téléphone
-- Système de notation et scoring de risque
-- Détection par expressions régulières
-- Analyse par intelligence artificielle
-- Base de données de signatures connues
+## Architecture
 
-### 🚨 Signalement d'arnaques
-- Formulaire de signalement intuitif
-- Validation sécurisée des données
-- Upload de preuves (captures d'écran, documents)
-- Système de modération
-- Anonymat possible pour les victimes
+```
+app/
+├── api/              — Routes API (analyze, report, contact, temoignage, chat)
+├── admin/            — Panel bénévole (SSR, accès restreint rôle admin)
+└── [pages]/          — Pages publiques
 
-### 💬 Témoignages communautaires
-- Partage d'expériences vécues
-- Support entre membres
-- Système de notation et commentaires
-- Filtrage et recherche
+lib/
+├── analyzer/         — Moteur d'analyse (regex + Mistral AI)
+│   ├── index.ts      — Point d'entrée
+│   ├── url.ts / email.ts / phone.ts / message.ts  — Règles regex par type
+│   ├── ai.ts         — Intégration Mistral
+│   └── database.ts   — Blacklist/whitelist en mémoire (reset au cold start)
+├── ratelimit/        — Rate limiting Upstash (sliding window)
+├── supabase/         — Clients Supabase (server, auth)
+└── api-helpers.ts    — Sanitize, headers, helpers partagés
 
-### 📚 Centre de ressources
-- Blog et articles éducatifs
-- FAQ détaillée
-- Guides de prévention
-- Alertes et actualités sur les nouvelles arnaques
+hooks/
+├── useChat.ts        — Chat côté visiteur (Supabase Realtime)
+└── useAdminChat.ts   — Chat côté bénévole
 
-### 🏗️ Architecture
-- API REST complète
-- Rate Limiting et protection contre les abus
-- Gestion des erreurs et monitoring
-- Responsive Design mobile-first
-- Accessibilité respectée
+supabase/migrations/  — Migrations SQL (à appliquer via SQL Editor Supabase)
+```
 
-## 🤝 Contribution
+### Système de chat (Supabase Realtime)
 
-Nous accueillons chaleureusement les contributions de la communauté ! Voici comment contribuer :
+- `chat:session:{id}` — Canal par visiteur (messages + indicateur de frappe)
+- `chat:admin-presence` — Présence partagée via Supabase Presence (survit aux reconnexions tardives)
 
-1. **Forker le projet** sur GitHub
-2. **Créer une branche de feature**
-   ```bash
-   git checkout -b feature/nouvelle-fonctionnalité
-   ```
-3. **Effectuez vos modifications** et respectez les conventions de code
-4. **Committez vos changements**
-   ```bash
-   git commit -m "Ajout: description de la fonctionnalité"
-   ```
-5. **Pusher la branche**
-   ```bash
-   git push origin feature/nouvelle-fonctionnalité
-   ```
-6. **Ouvrir une Pull Request** avec une description claire
+Les messages sont diffusés via Realtime puis persistés via `POST /api/chat/message`.
 
-Toutes les contributions sont les bienvenues : corrections de bugs, améliorations, nouvelles fonctionnalités, documentation, traductions.
+### Panel admin
 
-## 📄 Licence
+Protégé côté serveur par `proxy.ts` — requiert un utilisateur Supabase avec `app_metadata.role === 'admin'`.
 
-Ce projet est sous licence **GNU Affero General Public License v3.0**. Voir le fichier [LICENSE](LICENSE) pour plus de détails.
+---
 
-## 📞 Support
+## Contribution
 
-Pour toute question ou problème :
+Voir [CONTRIBUTING.md](CONTRIBUTING.md) pour le guide complet : workflow Git, standards de code, conventions de nommage et architecture à respecter.
 
-- Ouvrir une issue sur [GitHub](https://github.com/Biscuits-Dev/Anti-pepins/issues)
+En résumé :
+
+1. Forker le repo et créer une branche depuis `main`
+2. Écrire les tests en premier (`__tests__/`)
+3. Vérifier avant de pousser : `npm run lint && npx tsc --noEmit && npm test`
+4. Ouvrir une Pull Request vers `main`
+
+Toutes les contributions sont les bienvenues : corrections de bugs, nouvelles fonctionnalités, documentation, traductions.
+
+---
+
+## Licence
+
+Ce projet est sous licence **GNU Affero General Public License v3.0**. Voir [LICENSE](LICENSE).
+
+---
+
+## Support
+
+- Ouvrir une [issue GitHub](https://github.com/Biscuits-Dev/Anti-pepins/issues)
 - Contacter l'équipe via le [formulaire de contact](https://anti-pepins.biscuits-ia.com/contact)
 
 ---
 
-**Anti Pepins** est une initiative de l'association **Biscuits IA**, dédiée à la protection des utilisateurs contre les arnaques en ligne.
-
-💡 *Ensemble, nous pouvons lutter contre les arnaques !*
+*Anti-Pépins est une initiative de l'association **Biscuits IA**, dédiée à la protection des utilisateurs contre les arnaques en ligne.*
