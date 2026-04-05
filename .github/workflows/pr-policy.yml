@@ -14,7 +14,7 @@ jobs:
     steps:
       - name: Check PR targets dev
         if: github.base_ref != 'dev'
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             const base = context.payload.pull_request.base.ref;
